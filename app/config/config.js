@@ -1,0 +1,3 @@
+module.exports = {
+    CONFIG_URL: "mongodb+srv://fevoff:Rahul5057@fevoff.oocq6mx.mongodb.net/fevoff?retryWrites=true&w=majority&appName=Fevoff",
+};
