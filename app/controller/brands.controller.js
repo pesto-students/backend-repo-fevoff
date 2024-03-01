@@ -29,12 +29,13 @@ exports.getBrandList = async (req, res, next) => {
             });
         }
     } catch (error) {
-        console.error("Error fetching brands:", error);
+
         res.status(500).send({
-            message: "Internal Server Error",
+            message: "Internal Server Error " + error.message,
             status: false,
             data: null
         });
+
     }
 
 };
