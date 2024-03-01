@@ -10,6 +10,10 @@ const db = require('./app/model/db');
 
 const cors = require('cors');
 
+require("./app/config/media-upload");
+
+const bodyParser = require('body-parser');
+
 const baseUrl = "/api";
 
 app.use(express.json());
@@ -17,6 +21,10 @@ app.use(express.json());
 app.use(morgan('dev'));
 
 app.use(cors());
+
+app.use(bodyParser.json({ limit: "20mb" }));
+
+app.use(bodyParser.urlencoded({ limit: "20mb", extended: true }));
 
 const connectionCheck = async () => {
 

@@ -2,8 +2,6 @@ const express = require('express');
 
 const mongoose = require('mongoose');
 
-const Admin = function () { };
-
 const admin = mongoose.Schema({
     name: String,
     email: String,
@@ -11,4 +9,4 @@ const admin = mongoose.Schema({
     profile_image: String,
 }, { timestamps: true });
 
-module.exports = mongoose.model("admins", admin);
+module.exports = mongoose.model("admin", admin);

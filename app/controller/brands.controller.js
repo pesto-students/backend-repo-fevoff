@@ -59,7 +59,7 @@ exports.createBrand = async (req, res, next) => {
 
     if (details.brand_image != null && details.brand_image != "") {
 
-        imageURL = await decodeBase64Image(data.brand_image, imageName);
+        imageURL = await decodeBase64Image(details.brand_image, imageName);
 
         data = { ...data, brand_image: imageURL };
     } else {
@@ -132,7 +132,7 @@ exports.updateBrand = async (req, res, next) => {
 
     if (details.brand_image != null && details.brand_image != "") {
 
-        imageURL = await decodeBase64Image(data.brand_image, imageName);
+        imageURL = await decodeBase64Image(details.brand_image, imageName);
 
         data = { ...data, brand_image: imageURL };
     }

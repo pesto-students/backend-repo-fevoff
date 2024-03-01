@@ -7,7 +7,7 @@ const brands = mongoose.Schema({
     },
     brand_slug: {
         type: String,
-        required: [true, "Please Provide Brand Name"],
+        required: [true, "Please Provide Brand Slug"],
     },
     show_hide: {
         type: Boolean,

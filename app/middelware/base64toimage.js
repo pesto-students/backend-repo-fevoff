@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const path = require('path');
+const cloudinary = require('cloudinary');
 
 /* const decodeBase64Image = async (image) => {
 
@@ -39,9 +39,24 @@ const decodeBase64Image = async (image, imgName) => {
 
     fs.writeFileSync(outputPath, imageBuffer);
 
-    let final_path = process.env.IMAGE_BASEURL + outputPath;
+    /* let final_path = process.env.IMAGE_BASEURL + outputPath;
 
-    return final_path;
+    return final_path; */
+
+    const options = {
+        use_filename: true,
+        unique_filename: false,
+        overwrite: true,
+    };
+
+    try {
+        const result = await cloudinary.uploader.upload(outputPath, options);
+
+        return result.secure_url;
+    } catch (error) {
+        console.error(error);
+        return;
+    }
 }
 
 
