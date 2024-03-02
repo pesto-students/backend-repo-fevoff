@@ -8,21 +8,31 @@ const moment = require('moment');
 
 const decodeBase64Image = require('./../middelware/base64toimage');
 
+const statusCode = require("./../config/status-codes");
+
 exports.getBrandList = async (req, res, next) => {
 
-    const where = { show_hide: 1, status: 1 };
+    let where = { show_hide: 1, status: 1 };
+
+    if (Object.keys(req.query).length > 0) {
+        if (req.query.name !== "") {
+            where = {
+                ...where, name: req.query.name,
+            }
+        }
+    }
 
     try {
         const data = await Brand.find(where);
 
         if (data.length > 0) {
-            res.status(200).send({
+            res.status(statusCode.SUCCESS_CODE).send({
                 message: "Brands fetched successfully",
                 status: true,
                 data: data
             });
         } else {
-            res.status(200).send({
+            res.status(statusCode.SUCCESS_CODE).send({
                 message: "List is Empty",
                 status: true,
                 data: []
@@ -30,7 +40,7 @@ exports.getBrandList = async (req, res, next) => {
         }
     } catch (error) {
 
-        res.status(500).send({
+        res.status(statusCode.INTERNAL_SERVER_ERROR).send({
             message: "Internal Server Error " + error.message,
             status: false,
             data: null
@@ -58,20 +68,20 @@ exports.getBrandDetails = async (req, res, next) => {
             const data = await Brand.find(where);
 
             if (data.length > 0) {
-                res.status(200).send({
+                res.status(statusCode.SUCCESS_CODE).send({
                     message: "Brand Details fetched successfully",
                     status: true,
                     data: data[0],
                 });
             } else {
-                res.status(200).send({
+                res.status(statusCode.NOT_MODIFIED).send({
                     message: "Unable to Find Brand Details",
                     status: true,
                     data: []
                 });
             }
         } else {
-            res.status(200).send({
+            res.status(statusCode.NO_CONTENT).send({
                 message: "Please provide a Brand Id",
                 status: true,
                 data: []
@@ -79,7 +89,7 @@ exports.getBrandDetails = async (req, res, next) => {
         }
     } catch (error) {
 
-        res.status(500).send({
+        res.status(statusCode.INTERNAL_SERVER_ERROR).send({
             message: "Internal Server Error " + error.message,
             status: false,
             data: null
@@ -124,13 +134,13 @@ exports.createBrand = async (req, res, next) => {
             const reponse = await brandDetails.save();
 
             if (reponse) {
-                res.status(200).send({
+                res.status(statusCode.SUCCESS_CODE).send({
                     message: "Brands Added successfully",
                     status: true,
                     data: reponse
                 });
             } else {
-                res.status(200).send({
+                res.status(statusCode.NOT_MODIFIED).send({
                     message: "Unable to add brand",
                     status: false,
                     data: []
@@ -139,7 +149,7 @@ exports.createBrand = async (req, res, next) => {
 
         } else {
 
-            res.status(400).send({
+            res.status(statusCode.ALREADY_EXIST).send({
                 message: "Brand already exists",
                 status: false,
                 data: [],
@@ -149,7 +159,7 @@ exports.createBrand = async (req, res, next) => {
 
     } catch (error) {
 
-        res.status(500).send({
+        res.status(statusCode.INTERNAL_SERVER_ERROR).send({
             message: "Internal Server Error " + error.message,
             status: false,
             data: null
@@ -197,13 +207,13 @@ exports.updateBrand = async (req, res, next) => {
             );
 
             if (reponse) {
-                res.status(200).send({
+                res.status(statusCode.SUCCESS_CODE).send({
                     message: "Brands Updated successfully",
                     status: true,
                     data: reponse
                 });
             } else {
-                res.status(200).send({
+                res.status(statusCode.NOT_MODIFIED).send({
                     message: "Unable to update brand",
                     status: false,
                     data: []
@@ -212,7 +222,7 @@ exports.updateBrand = async (req, res, next) => {
 
         } else {
 
-            res.status(400).send({
+            res.status(statusCode.NO_CONTENT).send({
                 message: "Brand Not exist",
                 status: false,
                 data: [],
@@ -222,7 +232,7 @@ exports.updateBrand = async (req, res, next) => {
 
     } catch (error) {
 
-        res.status(500).send({
+        res.status(statusCode.INTERNAL_SERVER_ERROR).send({
             message: "Internal Server Error " + error.message,
             status: false,
             data: null
@@ -255,13 +265,13 @@ exports.deleteBrand = async (req, res, next) => {
             );
 
             if (reponse) {
-                res.status(200).send({
+                res.status(statusCode.SUCCESS_CODE).send({
                     message: "Brand Deleted successfully",
                     status: true,
                     data: reponse
                 });
             } else {
-                res.status(200).send({
+                res.status(statusCode.NOT_MODIFIED).send({
                     message: "Unable to delete brand",
                     status: false,
                     data: []
@@ -270,7 +280,7 @@ exports.deleteBrand = async (req, res, next) => {
 
         } else {
 
-            res.status(400).send({
+            res.status(statusCode.NO_CONTENT).send({
                 message: "Brand Not exist",
                 status: false,
                 data: [],
@@ -280,7 +290,7 @@ exports.deleteBrand = async (req, res, next) => {
 
     } catch (error) {
 
-        res.status(500).send({
+        res.status(statusCode.INTERNAL_SERVER_ERROR).send({
             message: "Internal Server Error " + error.message,
             status: false,
             data: null

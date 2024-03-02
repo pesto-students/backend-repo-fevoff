@@ -8,6 +8,8 @@ const moment = require('moment');
 
 const decodeBase64Image = require('./../middelware/base64toimage');
 
+const statusCode = require("./../config/status-codes");
+
 exports.getCategoryList = async (req, res, next) => {
 
     const where = { showHide: 1, status: 1 };
@@ -16,13 +18,13 @@ exports.getCategoryList = async (req, res, next) => {
         const data = await Category.find(where);
 
         if (data.length > 0) {
-            res.status(200).send({
+            res.status(statusCode.SUCCESS_CODE).send({
                 message: "Categorys fetched successfully",
                 status: true,
                 data: data
             });
         } else {
-            res.status(200).send({
+            res.status(statusCode.SUCCESS_CODE).send({
                 message: "List is Empty",
                 status: true,
                 data: []
@@ -30,7 +32,7 @@ exports.getCategoryList = async (req, res, next) => {
         }
     } catch (error) {
 
-        res.status(500).send({
+        res.status(statusCode.INTERNAL_SERVER_ERROR).send({
             message: "Internal Server Error " + error.message,
             status: false,
             data: null
@@ -59,20 +61,20 @@ exports.getCategoryDetails = async (req, res, next) => {
             const data = await Category.find(where);
 
             if (data.length > 0) {
-                res.status(200).send({
+                res.status(statusCode.SUCCESS_CODE).send({
                     message: "Category Details fetched successfully",
                     status: true,
                     data: data[0],
                 });
             } else {
-                res.status(200).send({
+                res.status(statusCode.NOT_MODIFIED).send({
                     message: "Unable to Find Category Details",
                     status: true,
                     data: []
                 });
             }
         } else {
-            res.status(200).send({
+            res.status(statusCode.NO_CONTENT).send({
                 message: "Please provide a Brand Id",
                 status: true,
                 data: []
@@ -80,7 +82,7 @@ exports.getCategoryDetails = async (req, res, next) => {
         }
     } catch (error) {
 
-        res.status(500).send({
+        res.status(statusCode.INTERNAL_SERVER_ERROR).send({
             message: "Internal Server Error " + error.message,
             status: false,
             data: null
@@ -125,13 +127,13 @@ exports.createCategory = async (req, res, next) => {
             const reponse = await categoryDetails.save();
 
             if (reponse) {
-                res.status(200).send({
+                res.status(statusCode.SUCCESS_CODE).send({
                     message: "Category Added successfully",
                     status: true,
                     data: reponse
                 });
             } else {
-                res.status(200).send({
+                res.status(statusCode.NOT_MODIFIED).send({
                     message: "Unable to add Category",
                     status: false,
                     data: []
@@ -140,7 +142,7 @@ exports.createCategory = async (req, res, next) => {
 
         } else {
 
-            res.status(400).send({
+            res.status(statusCode.ALREADY_EXIST).send({
                 message: "Category already exists",
                 status: false,
                 data: [],
@@ -150,7 +152,7 @@ exports.createCategory = async (req, res, next) => {
 
     } catch (error) {
 
-        res.status(500).send({
+        res.status(statusCode.INTERNAL_SERVER_ERROR).send({
             message: "Internal Server Error " + error.message,
             status: false,
             data: null
@@ -198,13 +200,13 @@ exports.updateCategory = async (req, res, next) => {
             );
 
             if (reponse) {
-                res.status(200).send({
+                res.status(statusCode.SUCCESS_CODE).send({
                     message: "Category Updated successfully",
                     status: true,
                     data: reponse
                 });
             } else {
-                res.status(200).send({
+                res.status(statusCode.NOT_MODIFIED).send({
                     message: "Unable to update Category",
                     status: false,
                     data: []
@@ -213,7 +215,7 @@ exports.updateCategory = async (req, res, next) => {
 
         } else {
 
-            res.status(400).send({
+            res.status(statusCode.NO_CONTENT).send({
                 message: "Category Not exist",
                 status: false,
                 data: [],
@@ -223,7 +225,7 @@ exports.updateCategory = async (req, res, next) => {
 
     } catch (error) {
 
-        res.status(500).send({
+        res.status(statusCode.INTERNAL_SERVER_ERROR).send({
             message: "Internal Server Error " + error.message,
             status: false,
             data: null
@@ -255,13 +257,13 @@ exports.deleteCategory = async (req, res, next) => {
             );
 
             if (reponse) {
-                res.status(200).send({
+                res.status(statusCode.SUCCESS_CODE).send({
                     message: "Category Deleted successfully",
                     status: true,
                     data: reponse
                 });
             } else {
-                res.status(200).send({
+                res.status(statusCode.NOT_MODIFIED).send({
                     message: "Unable to delete Category",
                     status: false,
                     data: []
@@ -270,7 +272,7 @@ exports.deleteCategory = async (req, res, next) => {
 
         } else {
 
-            res.status(400).send({
+            res.status(statusCode.NO_CONTENT).send({
                 message: "Category Not exist",
                 status: false,
                 data: [],
@@ -280,7 +282,7 @@ exports.deleteCategory = async (req, res, next) => {
 
     } catch (error) {
 
-        res.status(500).send({
+        res.status(statusCode.INTERNAL_SERVER_ERROR).send({
             message: "Internal Server Error " + error.message,
             status: false,
             data: null
