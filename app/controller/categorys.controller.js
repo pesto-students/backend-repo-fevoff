@@ -42,6 +42,54 @@ exports.getCategoryList = async (req, res, next) => {
 
 
 
+exports.getCategoryDetails = async (req, res, next) => {
+
+    const categoryId = req.params.categoryId;
+
+    let where = { showHide: 1, status: 1 };
+
+    try {
+
+        if (categoryId != "") {
+
+            where = {
+                ...where, _id: categoryId
+            }
+
+            const data = await Category.find(where);
+
+            if (data.length > 0) {
+                res.status(200).send({
+                    message: "Category Details fetched successfully",
+                    status: true,
+                    data: data[0],
+                });
+            } else {
+                res.status(200).send({
+                    message: "Unable to Find Category Details",
+                    status: true,
+                    data: []
+                });
+            }
+        } else {
+            res.status(200).send({
+                message: "Please provide a Brand Id",
+                status: true,
+                data: []
+            });
+        }
+    } catch (error) {
+
+        res.status(500).send({
+            message: "Internal Server Error " + error.message,
+            status: false,
+            data: null
+        });
+
+    }
+};
+
+
 exports.createCategory = async (req, res, next) => {
 
     const details = req.body;

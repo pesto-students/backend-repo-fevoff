@@ -41,6 +41,53 @@ exports.getBrandList = async (req, res, next) => {
 };
 
 
+exports.getBrandDetails = async (req, res, next) => {
+
+    const brandId = req.params.brandId;
+
+    let where = { show_hide: 1, status: 1 };
+
+    try {
+
+        if (brandId != "") {
+
+            where = {
+                ...where, _id: brandId
+            }
+
+            const data = await Brand.find(where);
+
+            if (data.length > 0) {
+                res.status(200).send({
+                    message: "Brand Details fetched successfully",
+                    status: true,
+                    data: data[0],
+                });
+            } else {
+                res.status(200).send({
+                    message: "Unable to Find Brand Details",
+                    status: true,
+                    data: []
+                });
+            }
+        } else {
+            res.status(200).send({
+                message: "Please provide a Brand Id",
+                status: true,
+                data: []
+            });
+        }
+    } catch (error) {
+
+        res.status(500).send({
+            message: "Internal Server Error " + error.message,
+            status: false,
+            data: null
+        });
+
+    }
+};
+
 
 exports.createBrand = async (req, res, next) => {
 
