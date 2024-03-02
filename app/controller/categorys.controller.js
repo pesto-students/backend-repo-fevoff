@@ -1,23 +1,23 @@
 const model = require('../model/db');
 
-const Brand = model.brands;
+const Category = model.categorys;
 
-const imagePath = "uploads/brands/";
+const imagePath = "uploads/categorys/";
 
 const moment = require('moment');
 
 const decodeBase64Image = require('./../middelware/base64toimage');
 
-exports.getBrandList = async (req, res, next) => {
+exports.getCategoryList = async (req, res, next) => {
 
-    const where = { show_hide: 1, status: 1 };
+    const where = { showHide: 1, status: 1 };
 
     try {
-        const data = await Brand.find(where);
+        const data = await Category.find(where);
 
         if (data.length > 0) {
             res.status(200).send({
-                message: "Brands fetched successfully",
+                message: "Categorys fetched successfully",
                 status: true,
                 data: data
             });
@@ -42,49 +42,49 @@ exports.getBrandList = async (req, res, next) => {
 
 
 
-exports.createBrand = async (req, res, next) => {
+exports.createCategory = async (req, res, next) => {
 
     const details = req.body;
 
     let data = {
         name: details.name,
-        brand_slug: details.brand_slug,
-        show_hide: details.show_hide,
+        categorySlug: details.categorySlug,
+        showHide: details.showHide,
         status: 1,
     }
 
-    let imageName = imagePath + "brands-" + moment().format('YYYY-MM-DD-HH-mm-ss');
+    let imageName = imagePath + "category-" + moment().format('YYYY-MM-DD-HH-mm-ss');
 
     let imageURL = "";
 
-    if (details.brand_image != null && details.brand_image != "") {
+    if (details.categoryImage != null && details.categoryImage != "") {
 
-        imageURL = await decodeBase64Image(details.brand_image, imageName);
+        imageURL = await decodeBase64Image(details.categoryImage, imageName);
 
-        data = { ...data, brand_image: imageURL };
+        data = { ...data, categoryImage: imageURL };
     } else {
-        data = { ...data, brand_image: "" };
+        data = { ...data, categoryImage: "" };
     }
 
     try {
 
-        const check = await Brand.find({ brand_slug: details.brand_slug });
+        const check = await Category.find({ categorySlug: details.categorySlug });
 
         if (check.length === 0) {
 
-            const brandDetails = new Brand(data);
+            const categoryDetails = new Category(data);
 
-            const reponse = await brandDetails.save();
+            const reponse = await categoryDetails.save();
 
             if (reponse) {
                 res.status(200).send({
-                    message: "Brands Added successfully",
+                    message: "Category Added successfully",
                     status: true,
                     data: reponse
                 });
             } else {
                 res.status(200).send({
-                    message: "Unable to add brand",
+                    message: "Unable to add Category",
                     status: false,
                     data: []
                 });
@@ -93,7 +93,7 @@ exports.createBrand = async (req, res, next) => {
         } else {
 
             res.status(400).send({
-                message: "Brand already exists",
+                message: "Category already exists",
                 status: false,
                 data: [],
             });
@@ -114,50 +114,50 @@ exports.createBrand = async (req, res, next) => {
 
 
 
-exports.updateBrand = async (req, res, next) => {
+exports.updateCategory = async (req, res, next) => {
 
-    const brand_id = req.params.brand_id;
+    const categoryId = req.params.categoryId;
 
     const details = req.body;
 
     let data = {
         name: details.name,
-        brand_slug: details.brand_slug,
-        show_hide: details.show_hide,
+        categorySlug: details.categorySlug,
+        showHide: details.showHide,
     }
 
-    let imageName = imagePath + "brands-" + moment().format('YYYY-MM-DD-HH-mm-ss');
+    let imageName = imagePath + "category-" + moment().format('YYYY-MM-DD-HH-mm-ss');
 
     let imageURL = "";
 
-    if (details.brand_image != null && details.brand_image != "") {
+    if (details.categoryImage != null && details.categoryImage != "") {
 
-        imageURL = await decodeBase64Image(details.brand_image, imageName);
+        imageURL = await decodeBase64Image(details.categoryImage, imageName);
 
-        data = { ...data, brand_image: imageURL };
+        data = { ...data, categoryImage: imageURL };
     }
 
     try {
 
-        const check = await Brand.find({ _id: brand_id });
+        const check = await Category.find({ _id: categoryId });
 
         if (check.length > 0) {
 
-            const reponse = await Brand.findOneAndUpdate(
-                { _id: brand_id },
+            const reponse = await Category.findOneAndUpdate(
+                { _id: categoryId },
                 { $set: data },
                 { new: true }
             );
 
             if (reponse) {
                 res.status(200).send({
-                    message: "Brands Updated successfully",
+                    message: "Category Updated successfully",
                     status: true,
                     data: reponse
                 });
             } else {
                 res.status(200).send({
-                    message: "Unable to update brand",
+                    message: "Unable to update Category",
                     status: false,
                     data: []
                 });
@@ -166,7 +166,7 @@ exports.updateBrand = async (req, res, next) => {
         } else {
 
             res.status(400).send({
-                message: "Brand Not exist",
+                message: "Category Not exist",
                 status: false,
                 data: [],
             });
@@ -186,36 +186,35 @@ exports.updateBrand = async (req, res, next) => {
 };
 
 
+exports.deleteCategory = async (req, res, next) => {
 
-exports.deleteBrand = async (req, res, next) => {
+    const categoryId = req.params.categoryId;
 
-    const brandId = req.params.brandId;
-
-    const data = {
+    let data = {
         status: 0,
     }
 
     try {
 
-        const check = await Brand.find({ _id: brandId, status: 1 });
+        const check = await Category.find({ _id: categoryId, status: 1 });
 
         if (check.length > 0) {
 
-            const reponse = await Brand.findOneAndUpdate(
-                { _id: brandId },
+            const reponse = await Category.findOneAndUpdate(
+                { _id: categoryId },
                 { $set: data },
                 { new: true }
             );
 
             if (reponse) {
                 res.status(200).send({
-                    message: "Brand Deleted successfully",
+                    message: "Category Deleted successfully",
                     status: true,
                     data: reponse
                 });
             } else {
                 res.status(200).send({
-                    message: "Unable to delete brand",
+                    message: "Unable to delete Category",
                     status: false,
                     data: []
                 });
@@ -224,7 +223,7 @@ exports.deleteBrand = async (req, res, next) => {
         } else {
 
             res.status(400).send({
-                message: "Brand Not exist",
+                message: "Category Not exist",
                 status: false,
                 data: [],
             });

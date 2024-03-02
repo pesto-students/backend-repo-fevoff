@@ -6,7 +6,11 @@ const admin = require('./admin.routes');
 
 const brands = require('./brands.routes');
 
+const categorys = require("./categorys.routes");
+
 app.use(brands);
+
+app.use(categorys);
 
 app.use(admin);
 

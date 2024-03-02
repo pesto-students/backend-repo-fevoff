@@ -14,4 +14,6 @@ routes.route(baseUrl).post(brands.createBrand);
 
 routes.route(baseUrl + "/:brand_id").put(brands.updateBrand);
 
+routes.route(baseUrl + "/:brandId").delete(brands.deleteBrand);
+
 module.exports = routes;

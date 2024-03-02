@@ -14,4 +14,6 @@ db.admin = require('./admin.model');
 
 db.brands = require('./brands.model');
 
+db.categorys = require('./categorys.model');
+
 module.exports = db;
