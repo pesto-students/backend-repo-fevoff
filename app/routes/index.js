@@ -10,11 +10,15 @@ const categorys = require("./categorys.routes");
 
 const users = require('./users.routes');
 
+const usersAddress = require('./users-address.routes');
+
 app.use(brands);
 
 app.use(categorys);
 
 app.use(users);
+
+app.use(usersAddress);
 
 app.use(admin);
 

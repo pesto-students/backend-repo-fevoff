@@ -18,4 +18,6 @@ db.categorys = require('./categorys.model');
 
 db.users = require('./users.model');
 
+db.usersAddress = require('./users-address.model');
+
 module.exports = db;

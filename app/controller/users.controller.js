@@ -45,7 +45,6 @@ exports.getUsersList = async (req, res, next) => {
             data: [],
         })
     }
-
 };
 
 
