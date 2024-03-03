@@ -17,13 +17,13 @@ exports.getBrandList = async (req, res, next) => {
     if (Object.keys(req.query).length > 0) {
         if (req.query.name !== "") {
             where = {
-                ...where, name: req.query.name,
+                ...where, name: { $regex: req.query.name, $options: "i" },
             }
         }
     }
 
     try {
-        const data = await Brand.find(where);
+        const data = await Brand.find(where).sort("-createdAt");
 
         if (data.length > 0) {
             res.status(statusCode.SUCCESS_CODE).send({
@@ -43,7 +43,7 @@ exports.getBrandList = async (req, res, next) => {
         res.status(statusCode.INTERNAL_SERVER_ERROR).send({
             message: "Internal Server Error " + error.message,
             status: false,
-            data: null
+            data: []
         });
 
     }
@@ -83,7 +83,7 @@ exports.getBrandDetails = async (req, res, next) => {
         } else {
             res.status(statusCode.NO_CONTENT).send({
                 message: "Please provide a Brand Id",
-                status: true,
+                status: false,
                 data: []
             });
         }
@@ -92,7 +92,7 @@ exports.getBrandDetails = async (req, res, next) => {
         res.status(statusCode.INTERNAL_SERVER_ERROR).send({
             message: "Internal Server Error " + error.message,
             status: false,
-            data: null
+            data: []
         });
 
     }
@@ -162,7 +162,7 @@ exports.createBrand = async (req, res, next) => {
         res.status(statusCode.INTERNAL_SERVER_ERROR).send({
             message: "Internal Server Error " + error.message,
             status: false,
-            data: null
+            data: []
         });
 
     }
@@ -235,7 +235,7 @@ exports.updateBrand = async (req, res, next) => {
         res.status(statusCode.INTERNAL_SERVER_ERROR).send({
             message: "Internal Server Error " + error.message,
             status: false,
-            data: null
+            data: []
         });
 
     }
@@ -293,7 +293,7 @@ exports.deleteBrand = async (req, res, next) => {
         res.status(statusCode.INTERNAL_SERVER_ERROR).send({
             message: "Internal Server Error " + error.message,
             status: false,
-            data: null
+            data: []
         });
 
     }

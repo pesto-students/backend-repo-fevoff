@@ -11,7 +11,7 @@ const userSchema = mongoose.Schema({
     },
     countryCode: {
         type: Number,
-        required: [true, "Please enter country code"],
+        default: 91,
     },
     contact: {
         type: Number,
@@ -19,9 +19,13 @@ const userSchema = mongoose.Schema({
     },
     profileImage: {
         type: String,
+    },
+    password: {
+        type: String,
         required: [true, "Please enter Password"],
     },
-    password: String,
+    gender: String,
+    dob: String,
     userVerify: {
         type: Boolean,
         default: false,
@@ -32,4 +36,4 @@ const userSchema = mongoose.Schema({
     },
 }, { timestamps: true });
 
-module.exports = mongoose.model("users", userSchema);
+module.exports = mongoose.model("user", userSchema);

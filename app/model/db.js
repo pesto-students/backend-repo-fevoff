@@ -16,4 +16,6 @@ db.brands = require('./brands.model');
 
 db.categorys = require('./categorys.model');
 
+db.users = require('./users.model');
+
 module.exports = db;

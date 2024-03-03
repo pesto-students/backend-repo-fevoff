@@ -12,7 +12,15 @@ const statusCode = require("./../config/status-codes");
 
 exports.getCategoryList = async (req, res, next) => {
 
-    const where = { showHide: 1, status: 1 };
+    let where = { showHide: 1, status: 1 };
+
+    if (Object.keys(req.query).length > 0) {
+        if (req.query.name !== "") {
+            where = {
+                ...where, name: { $regex: req.query.name, $options: "i" },
+            }
+        }
+    }
 
     try {
         const data = await Category.find(where);
@@ -35,7 +43,7 @@ exports.getCategoryList = async (req, res, next) => {
         res.status(statusCode.INTERNAL_SERVER_ERROR).send({
             message: "Internal Server Error " + error.message,
             status: false,
-            data: null
+            data: []
         });
 
     }
@@ -67,16 +75,16 @@ exports.getCategoryDetails = async (req, res, next) => {
                     data: data[0],
                 });
             } else {
-                res.status(statusCode.NOT_MODIFIED).send({
+                res.status(statusCode.BAD_REQUEST).send({
                     message: "Unable to Find Category Details",
-                    status: true,
+                    status: false,
                     data: []
                 });
             }
         } else {
             res.status(statusCode.NO_CONTENT).send({
                 message: "Please provide a Brand Id",
-                status: true,
+                status: false,
                 data: []
             });
         }
@@ -85,7 +93,7 @@ exports.getCategoryDetails = async (req, res, next) => {
         res.status(statusCode.INTERNAL_SERVER_ERROR).send({
             message: "Internal Server Error " + error.message,
             status: false,
-            data: null
+            data: []
         });
 
     }
@@ -155,7 +163,7 @@ exports.createCategory = async (req, res, next) => {
         res.status(statusCode.INTERNAL_SERVER_ERROR).send({
             message: "Internal Server Error " + error.message,
             status: false,
-            data: null
+            data: []
         });
 
     }
@@ -228,7 +236,7 @@ exports.updateCategory = async (req, res, next) => {
         res.status(statusCode.INTERNAL_SERVER_ERROR).send({
             message: "Internal Server Error " + error.message,
             status: false,
-            data: null
+            data: []
         });
 
     }
@@ -285,7 +293,7 @@ exports.deleteCategory = async (req, res, next) => {
         res.status(statusCode.INTERNAL_SERVER_ERROR).send({
             message: "Internal Server Error " + error.message,
             status: false,
-            data: null
+            data: []
         });
 
     }
