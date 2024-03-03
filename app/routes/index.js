@@ -12,6 +12,8 @@ const users = require('./users.routes');
 
 const usersAddress = require('./users-address.routes');
 
+const products = require('./products.routes');
+
 app.use(brands);
 
 app.use(categorys);
@@ -19,6 +21,8 @@ app.use(categorys);
 app.use(users);
 
 app.use(usersAddress);
+
+app.use(products);
 
 app.use(admin);
 

@@ -20,4 +20,6 @@ db.users = require('./users.model');
 
 db.usersAddress = require('./users-address.model');
 
+db.products = require("./products.model");
+
 module.exports = db;
