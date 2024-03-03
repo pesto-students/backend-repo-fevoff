@@ -6,6 +6,12 @@ const statusCode = require("./../config/status-codes");
 
 const encPassword = require("./../middelware/enc-password");
 
+const decodeBase64Image = require('./../middelware/base64toimage');
+
+const moment = require('moment');
+
+const imagePath = "uploads/users/";
+
 exports.getUsersList = async (req, res, next) => {
 
     let where = { status: 1 };
@@ -313,4 +319,53 @@ exports.deleteUser = async (req, res, next) => {
 
     }
 
+};
+
+
+exports.updateUserImage = async (req, res, next) => {
+
+    const data = req.body;
+
+    const userId = req.params.userId;
+
+    if (userId != "" && userId != null && data.profileImage != "" && data.profileImage != null) {
+
+        let imageName = imagePath + "user-img-" + userId + moment().format("YYYY-MM-DD-HH-mm-ss");
+
+        let userDetails = {};
+
+        let profileImage = "";
+
+        if (data.profileImage != null && data.profileImage != "") {
+            profileImage = await decodeBase64Image(data.profileImage, imageName);
+
+            userDetails = { ...userDetails, profileImage: profileImage };
+        }
+
+        const reponse = await Users.findOneAndUpdate(
+            { _id: userId },
+            { $set: userDetails },
+            { new: true }
+        );
+
+        if (reponse) {
+            res.status(statusCode.SUCCESS_CODE).send({
+                message: "User Profile Updated successfully",
+                status: true,
+                data: reponse
+            });
+        } else {
+            res.status(statusCode.NOT_MODIFIED).send({
+                message: "Unable to Updated User Image",
+                status: false,
+                data: []
+            });
+        }
+    } else {
+        res.status(statusCode.BAD_REQUEST).send({
+            message: "Please Provide User Image",
+            status: false,
+            data: [],
+        });
+    }
 };
