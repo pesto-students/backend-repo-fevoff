@@ -10,7 +10,7 @@ const decodeBase64Image = require('./../middelware/base64toimage');
 
 const moment = require('moment');
 
-/* const imagePath = "uploads/products/"; */
+const imagePath = "uploads/products/";
 
 exports.getProductsList = async (req, res, next) => {
 
@@ -111,6 +111,40 @@ exports.createProducts = async (req, res, next) => {
 
             if (check.length == 0) {
 
+                let productMainImage = "";
+
+                let imageName = imagePath + "product-img-" + moment().format("YYYY-MM-DD-HH-mm-ss");
+
+                if (data.productMainImage != null && data.productMainImage != "") {
+                    productMainImage = await decodeBase64Image(data.productMainImage, imageName);
+                }
+
+                let productImage1 = "";
+                if (data.productImage1 != null && data.productImage1 != "") {
+                    productImage1 = await decodeBase64Image(data.productImage1, imageName + "product-image-1");
+                }
+
+                let productImage2 = "";
+                if (data.productImage2 != null && data.productImage2 != "") {
+                    productImage2 = await decodeBase64Image(data.productImage2, imageName + "product-image-2");
+                }
+
+                let productImage3 = "";
+                if (data.productImage3 != null && data.productImage3 != "") {
+                    productImage3 = await decodeBase64Image(data.productImage3, imageName + "product-image-3");
+                }
+
+                let productImage4 = "";
+                if (data.productImage4 != null && data.productImage4 != "") {
+                    productImage4 = await decodeBase64Image(data.productImage4, imageName + "product-image-4");
+                }
+
+                let productImage5 = "";
+                if (data.productImage5 != null && data.productImage5 != "") {
+                    productImage5 = await decodeBase64Image(data.productImage5, imageName + "product-image-5");
+                }
+
+
                 let productDetails = new Products({
                     name: data.name,
                     productSlug: data.productSlug,
@@ -119,6 +153,18 @@ exports.createProducts = async (req, res, next) => {
                     productSmallDescription: data.productSmallDescription,
                     productDescription: data.productDescription,
                     showHide: data.showHide,
+                    rating: data.rating,
+                    sizeVariation: data.sizeVariation,
+                    productMrp: data.productMrp,
+                    productPrice: data.productPrice,
+                    availableQty: data.availableQty,
+                    productMainImage: productMainImage,
+                    productImage1: productImage1,
+                    productImage2: productImage2,
+                    productImage3: productImage3,
+                    productImage4: productImage4,
+                    productImage5: productImage5,
+                    productVideo: data.productVideo,
                 });
 
                 const reponse = await productDetails.save();
@@ -177,6 +223,8 @@ exports.updateProducts = async (req, res, next) => {
 
     const data = req.body;
 
+    console.log(data);
+
     if (data.name != "" && data.productSlug != "" && data.brand != "" && productId != "") {
 
         try {
@@ -196,6 +244,68 @@ exports.updateProducts = async (req, res, next) => {
                     productDescription: data.productDescription,
                     showHide: data.showHide,
                 };
+
+                if (data.rating != "" && data.rating != null) {
+                    productDetails = { ...productDetails, rating: data.rating };
+                }
+
+                if (data.sizeVariation != "" && data.sizeVariation != null) {
+                    productDetails = { ...productDetails, sizeVariation: data.sizeVariation };
+                }
+
+                if (data.productMrp != "" && data.productMrp != null) {
+                    productDetails = { ...productDetails, productMrp: data.productMrp };
+                }
+
+                if (data.productPrice != "" && data.productPrice != null) {
+                    productDetails = { ...productDetails, productPrice: data.productPrice };
+                }
+
+                if (data.availableQty != "" && data.availableQty != null) {
+                    productDetails = { ...productDetails, availableQty: data.availableQty };
+                }
+
+                if (data.productVideo != "" && data.productVideo != null) {
+                    productDetails = { ...productDetails, productVideo: data.productVideo };
+                }
+
+                let imageName = imagePath + "product-img-" + moment().format("YYYY-MM-DD-HH-mm-ss");
+
+                if (data.productMainImage != null && data.productMainImage != "") {
+                    let productMainImage = await decodeBase64Image(data.productMainImage, imageName);
+
+                    productDetails = { ...productDetails, productMainImage: productMainImage };
+                }
+
+                if (data.productImage1 != null && data.productImage1 != "") {
+                    let productImage1 = await decodeBase64Image(data.productImage1, imageName + "product-image-1");
+
+                    productDetails = { ...productDetails, productImage1: productImage1 };
+                }
+
+                if (data.productImage2 != null && data.productImage2 != "") {
+                    let productImage2 = await decodeBase64Image(data.productImage2, imageName + "product-image-2");
+
+                    productDetails = { ...productDetails, productImage2: productImage2 };
+                }
+
+                if (data.productImage3 != null && data.productImage3 != "") {
+                    let productImage3 = await decodeBase64Image(data.productImage3, imageName + "product-image-3");
+
+                    productDetails = { ...productDetails, productImage3: productImage3 };
+                }
+
+                if (data.productImage4 != null && data.productImage4 != "") {
+                    let productImage4 = await decodeBase64Image(data.productImage4, imageName + "product-image-4");
+
+                    productDetails = { ...productDetails, productImage4: productImage4 };
+                }
+
+                if (data.productImage5 != null && data.productImage5 != "") {
+                    let productImage5 = await decodeBase64Image(data.productImage5, imageName + "product-image-5");
+
+                    productDetails = { ...productDetails, productImage5: productImage5 };
+                }
 
                 const reponse = await Products.findOneAndUpdate(
                     { _id: productId },
@@ -303,53 +413,4 @@ exports.deleteProducts = async (req, res, next) => {
 
     }
 
-};
-
-
-exports.updateUserImage = async (req, res, next) => {
-
-    const data = req.body;
-
-    const productId = req.params.productId;
-
-    if (productId != "" && productId != null && data.profileImage != "" && data.profileImage != null) {
-
-        let imageName = imagePath + "user-img-" + productId + moment().format("YYYY-MM-DD-HH-mm-ss");
-
-        let productDetails = {};
-
-        let profileImage = "";
-
-        if (data.profileImage != null && data.profileImage != "") {
-            profileImage = await decodeBase64Image(data.profileImage, imageName);
-
-            productDetails = { ...productDetails, profileImage: profileImage };
-        }
-
-        const reponse = await Products.findOneAndUpdate(
-            { _id: productId },
-            { $set: productDetails },
-            { new: true }
-        );
-
-        if (reponse) {
-            res.status(statusCode.SUCCESS_CODE).send({
-                message: "Product Profile Updated successfully",
-                status: true,
-                data: reponse
-            });
-        } else {
-            res.status(statusCode.NOT_MODIFIED).send({
-                message: "Unable to Updated User Image",
-                status: false,
-                data: []
-            });
-        }
-    } else {
-        res.status(statusCode.BAD_REQUEST).send({
-            message: "Please Provide User Image",
-            status: false,
-            data: [],
-        });
-    }
 };
