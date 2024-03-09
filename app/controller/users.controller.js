@@ -18,7 +18,7 @@ exports.getUsersList = async (req, res, next) => {
 
     try {
 
-        const userList = await Users.find(where);
+        const userList = await Users.find(where).sort({ createdAt: -1 });
 
         if (userList.length > 0) {
 
@@ -120,6 +120,7 @@ exports.createUser = async (req, res, next) => {
                     password: newPassword,
                     gender: data.gender,
                     dob: data.dob,
+                    userVerify: data.userVerify,
                 });
 
                 const reponse = await userDetails.save();
