@@ -14,22 +14,36 @@ exports.getBrandList = async (req, res, next) => {
 
     let where = { show_hide: 1, status: 1 };
 
-    if (Object.keys(req.query).length > 0) {
-        if (req.query.name !== "") {
-            where = {
-                ...where, name: { $regex: req.query.name, $options: "i" },
-            }
-        }
+    if (req.query.name && req.query.name !== "") {
+        where = {
+            ...where,
+            name: { $regex: req.query.name, $options: "i" },
+        };
     }
 
     try {
-        const data = await Brand.find(where).sort("-createdAt");
+
+        const pageSize = 10;
+        const page = req.query.pageNo || 0;
+
+        let qry = Brand.find(where).sort({ createdAt: -1 });
+
+        if (page > 0) {
+            qry = qry.skip((page) * pageSize);
+        }
+
+        qry = qry.limit(pageSize);
+
+        const data = await qry;
+
+        let dataCount = await Brand.countDocuments(where);
 
         if (data.length > 0) {
             res.status(statusCode.SUCCESS_CODE).send({
                 message: "Brands fetched successfully",
                 status: true,
-                data: data
+                data: data,
+                totalBrands: dataCount
             });
         } else {
             res.status(statusCode.SUCCESS_CODE).send({
