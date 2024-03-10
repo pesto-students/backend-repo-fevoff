@@ -18,7 +18,22 @@ exports.getUsersList = async (req, res, next) => {
 
     try {
 
-        const userList = await Users.find(where).sort({ createdAt: -1 });
+        const pageSize = 10;
+        const page = req.query.pageNo || 0;
+
+        /* let userList = await Users.find(where).sort({ createdAt: -1 }).skip((page) * pageSize).limit(pageSize); */
+
+        let qry = Users.find(where).sort({ createdAt: -1 });
+
+        if (page > 0) {
+            qry = qry.skip((page) * pageSize);
+        }
+
+        qry = qry.limit(pageSize);
+
+        let userList = await qry;
+
+        let dataCount = await Users.countDocuments(where);
 
         if (userList.length > 0) {
 
@@ -26,6 +41,7 @@ exports.getUsersList = async (req, res, next) => {
                 message: "User List fetched successfully",
                 status: true,
                 data: userList,
+                totalUsers: dataCount,
             });
 
         } else {
