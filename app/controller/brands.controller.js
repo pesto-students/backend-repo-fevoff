@@ -12,7 +12,7 @@ const statusCode = require("./../config/status-codes");
 
 exports.getBrandList = async (req, res, next) => {
 
-    let where = { show_hide: 1, status: 1 };
+    let where = { status: 1 };
 
     if (req.query.name && req.query.name !== "") {
         where = {
