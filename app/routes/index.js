@@ -16,6 +16,8 @@ const products = require('./products.routes');
 
 const otpVerification = require('./otp-verification.routes');
 
+const userLogin = require('./users-login.routes');
+
 app.use(brands);
 
 app.use(categorys);
@@ -27,6 +29,8 @@ app.use(usersAddress);
 app.use(products);
 
 app.use(otpVerification);
+
+app.use(userLogin);
 
 app.use(admin);
 
