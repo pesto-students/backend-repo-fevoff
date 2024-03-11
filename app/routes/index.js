@@ -14,6 +14,8 @@ const usersAddress = require('./users-address.routes');
 
 const products = require('./products.routes');
 
+const otpVerification = require('./otp-verification.routes');
+
 app.use(brands);
 
 app.use(categorys);
@@ -23,6 +25,8 @@ app.use(users);
 app.use(usersAddress);
 
 app.use(products);
+
+app.use(otpVerification);
 
 app.use(admin);
 

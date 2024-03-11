@@ -22,4 +22,6 @@ db.usersAddress = require('./users-address.model');
 
 db.products = require("./products.model");
 
+db.otpVerification = require("./otp-verification.model");
+
 module.exports = db;
