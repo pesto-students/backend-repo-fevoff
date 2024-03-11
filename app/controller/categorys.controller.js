@@ -12,24 +12,37 @@ const statusCode = require("./../config/status-codes");
 
 exports.getCategoryList = async (req, res, next) => {
 
-    let where = { showHide: 1, status: 1 };
+    let where = { status: 1 };
 
-    if (Object.keys(req.query).length > 0) {
-        if (req.query.name !== "") {
-            where = {
-                ...where, name: { $regex: req.query.name, $options: "i" },
-            }
+    if (req.query.name && req.query.name !== "") {
+        where = {
+            ...where, name: { $regex: req.query.name, $options: "i" },
         }
     }
 
     try {
-        const data = await Category.find(where);
+
+        const pageSize = 10;
+        const page = req.query.pageNo || 0;
+
+        let qry = Category.find(where).sort({ createdAt: -1 });
+
+        if (page > 0) {
+            qry = qry.skip((page) * pageSize);
+        }
+
+        qry = qry.limit(pageSize);
+
+        const data = await qry;
+
+        let dataCount = await Category.countDocuments(where);
 
         if (data.length > 0) {
             res.status(statusCode.SUCCESS_CODE).send({
                 message: "Categorys fetched successfully",
                 status: true,
-                data: data
+                data: data,
+                totalCategorys: dataCount
             });
         } else {
             res.status(statusCode.SUCCESS_CODE).send({
