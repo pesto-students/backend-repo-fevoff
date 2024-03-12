@@ -10,6 +10,8 @@ const verifyJWT = require('../middelware/verify-jwt');
 
 routes.route(baseUrl).get(brands.getBrandList);
 
+routes.route(baseUrl + "/list").get(brands.getAllBrandList);
+
 routes.route(baseUrl + "/:brandId").get(brands.getBrandDetails);
 
 routes.route(baseUrl).post(brands.createBrand);

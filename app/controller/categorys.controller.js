@@ -312,3 +312,37 @@ exports.deleteCategory = async (req, res, next) => {
     }
 
 };
+
+
+exports.getAllCategoryList = async (req, res, next) => {
+
+    let where = { status: 1 };
+
+    try {
+
+        let data = await Category.find(where).sort({ name: 1 });
+
+        if (data.length > 0) {
+            res.status(statusCode.SUCCESS_CODE).send({
+                message: "Categorys fetched successfully",
+                status: true,
+                data: data
+            });
+        } else {
+            res.status(statusCode.SUCCESS_CODE).send({
+                message: "List is Empty",
+                status: true,
+                data: []
+            });
+        }
+    } catch (error) {
+
+        res.status(statusCode.INTERNAL_SERVER_ERROR).send({
+            message: "Internal Server Error " + error.message,
+            status: false,
+            data: []
+        });
+
+    }
+
+};

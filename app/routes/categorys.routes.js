@@ -8,6 +8,8 @@ const baseUrl = "/categorys";
 
 routes.route(baseUrl).get(brands.getCategoryList);
 
+routes.route(baseUrl + "/list").get(brands.getAllCategoryList);
+
 routes.route(baseUrl + "/:categoryId").get(brands.getCategoryDetails);
 
 routes.route(baseUrl).post(brands.createCategory);
