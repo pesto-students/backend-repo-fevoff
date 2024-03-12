@@ -6,6 +6,7 @@ const statusCode = require("./../config/status-codes");
 
 const decPassword = require("./../middelware/dec-password");
 
+const createJwtToken = require('./../middelware/create-jwt');
 
 exports.userLogin = async (req, res, next) => {
 
@@ -26,17 +27,24 @@ exports.userLogin = async (req, res, next) => {
                 let checkPassword = await decPassword(data.password, userData.password);
 
                 if (checkPassword === true) {
+
+                    const token = await createJwtToken(userData);
+
                     res.status(statusCode.SUCCESS_CODE).send({
                         message: "User Login successfully",
                         status: true,
                         data: userData,
+                        jwtToken: token
                     });
+
                 } else {
+
                     res.status(statusCode.BAD_REQUEST).send({
                         message: "Please Enter a Valid Password",
                         status: false,
                         data: []
                     });
+
                 }
 
             } else {
