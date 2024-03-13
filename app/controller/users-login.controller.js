@@ -12,13 +12,13 @@ exports.userLogin = async (req, res, next) => {
 
     const data = req.body;
 
-    if (data.email != "" && data.email != null && data.password != "" && data.password != "") {
+    if (data.userData != "" && data.userData != null && data.password != "" && data.password != "") {
 
         try {
 
-            let where = { email: data.email };
+            let where = { $or: [{ email: data.userData }, { contact: data.userData }] };
 
-            const check = await Users.find(where).select('_id, name email contact password profileImage').exec();
+            const check = await Users.find(where).select('_id name email contact password profileImage').exec();
 
             if (check.length > 0) {
 

@@ -14,7 +14,7 @@ const userSchema = mongoose.Schema({
         default: 91,
     },
     contact: {
-        type: Number,
+        type: String,
         required: [true, "Please enter Contact Number"],
     },
     profileImage: {

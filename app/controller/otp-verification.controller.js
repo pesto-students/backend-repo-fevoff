@@ -11,16 +11,23 @@ exports.sendOtp = async (req, res, next) => {
     const details = req.body;
 
     let data = {
-        contact: details.contact,
+        userData: details.userData,
         otpFor: details.otpFor || "user",
         otp: Math.floor(100000 + Math.random() * 900000),
     }
 
     try {
 
-        if (details.contact != "" && details.contact != null) {
+        if (details.userData != "" && details.userData != null) {
 
-            const check = await User.find({ contact: details.contact });
+            let where = {
+                $or: [
+                    { email: data.userData },
+                    { contact: data.userData }
+                ]
+            };
+
+            const check = await User.find(where);
 
             if (check.length > 0) {
 
