@@ -69,7 +69,7 @@ exports.getCategoryDetails = async (req, res, next) => {
 
     const categoryId = req.params.categoryId;
 
-    let where = { showHide: 1, status: 1 };
+    let where = { status: 1 };
 
     try {
 

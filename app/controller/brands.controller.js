@@ -69,7 +69,7 @@ exports.getBrandDetails = async (req, res, next) => {
 
     const brandId = req.params.brandId;
 
-    let where = { show_hide: 1, status: 1 };
+    let where = { status: 1 };
 
     try {
 
