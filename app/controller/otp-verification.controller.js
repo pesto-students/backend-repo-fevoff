@@ -11,20 +11,26 @@ exports.sendOtp = async (req, res, next) => {
     const details = req.body;
 
     let data = {
-        userId: details.userId,
-        otpFor: details.otpFor,
+        contact: details.contact,
+        otpFor: details.otpFor || "user",
         otp: Math.floor(100000 + Math.random() * 900000),
     }
 
     try {
 
-        if (details.userId != "" && details.userId != null) {
+        if (details.contact != "" && details.contact != null) {
 
-            const check = await User.find({ _id: details.userId });
+            const check = await User.find({ contact: details.contact });
 
             if (check.length > 0) {
 
-                const otpDetails = new OtpVerification(data);
+                let otpData = {
+                    userId: check[0]._id,
+                    otpFor: data.otpFor,
+                    otp: data.otp,
+                };
+
+                const otpDetails = new OtpVerification(otpData);
 
                 const reponse = await otpDetails.save();
 
