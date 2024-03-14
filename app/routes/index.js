@@ -18,6 +18,8 @@ const otpVerification = require('./otp-verification.routes');
 
 const userLogin = require('./users-login.routes');
 
+const cart = require('./cart.routes');
+
 app.use(brands);
 
 app.use(categorys);
@@ -33,5 +35,7 @@ app.use(otpVerification);
 app.use(userLogin);
 
 app.use(admin);
+
+app.use(cart);
 
 module.exports = app;
