@@ -1,6 +1,9 @@
+const model = require('./../model/db');
 
-// app.get('/api/orders/:userId'
-exports.getOrderHistory = async (req, res) => {
+const Order = model.order;
+
+
+exports.getOrderHistory = async (req, res, next) => {
     const { userId } = req.params;
 
     try {
@@ -8,7 +11,7 @@ exports.getOrderHistory = async (req, res) => {
             .populate({
                 path: 'items.productId',
                 select: 'name productSlug brand category productPrice productMainImage',
-                model: 'Product'
+                model: 'product'
             })
             .exec();
 

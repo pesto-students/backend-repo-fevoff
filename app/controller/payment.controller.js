@@ -1,5 +1,8 @@
-//app.post('/api/payment/callback'
-exports.paymentCallback = async (req, res) => {
+const model = require('./../model/db');
+
+const Order = model.order;
+
+exports.paymentCallback = async (req, res, next) => {
     const { orderId, transactionId, transactionTime, paymentStatus } = req.body;
 
     try {

@@ -1,7 +1,9 @@
+const model = require('./../model/db');
 
+const Order = model.order;
 
 //app.post('/api/checkout'
-exports.checkoutCart = async (req, res) => {
+exports.checkoutCart = async (req, res, next) => {
     const { userId, items, totalCost, paymentMethod, shippingAddress } = req.body;
 
     try {
