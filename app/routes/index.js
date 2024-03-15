@@ -20,6 +20,12 @@ const userLogin = require('./users-login.routes');
 
 const cart = require('./cart.routes');
 
+const order = require('./order.routes');
+
+const checkout = require('./checkout.routes');
+
+const payment = require('./payment.routes');
+
 app.use(brands);
 
 app.use(categorys);
@@ -37,5 +43,11 @@ app.use(userLogin);
 app.use(admin);
 
 app.use(cart);
+
+app.use(order);
+
+app.use(checkout);
+
+app.use(payment);
 
 module.exports = app;

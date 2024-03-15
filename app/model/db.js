@@ -26,4 +26,6 @@ db.otpVerification = require("./otp-verification.model");
 
 db.cart = require("./cart.model");
 
+db.order = require("./order.model");
+
 module.exports = db;
