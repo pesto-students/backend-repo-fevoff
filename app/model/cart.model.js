@@ -23,6 +23,10 @@ const cartItemSchema = new mongoose.Schema({
     productVideo: String,
     showHide: Boolean,
     status: Number,
+    size: {
+        type: String,
+        required: true
+    },
     quantity: {
         type: Number,
         required: true,

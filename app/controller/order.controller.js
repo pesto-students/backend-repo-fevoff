@@ -22,6 +22,9 @@ exports.getOrderHistory = async (req, res, next) => {
         // Transforming orders for client consumption
         const transformedOrders = orders.map(order => ({
             orderId: order._id,
+            subTotal: order.subTotal,
+            gst: order.gst,
+            shippingCharges: order.shippingCharges,
             totalCost: order.totalCost,
             paymentMethod: order.paymentMethod,
             shippingAddress: order.shippingAddress,

@@ -22,7 +22,7 @@ exports.getCart = async (req, res, next) => {
 
 
 exports.addToCart = async (req, res, next) => {
-    const { userId, productId, quantity } = req.body;
+    const { userId, productId, quantity, size } = req.body;
 
     try {
         const product = await Products.findById(productId);
@@ -40,14 +40,14 @@ exports.addToCart = async (req, res, next) => {
             } else {
                 const productInfo = product.toObject();
                 delete productInfo._id;
-                cart.items.push({ productId, quantity, ...productInfo });
+                cart.items.push({ productId, size, quantity, ...productInfo });
             }
         } else {
             const productInfo = product.toObject();
             delete productInfo._id;
             cart = new Cart({
                 userId,
-                items: [{ productId, quantity, ...productInfo }],
+                items: [{ productId, size, quantity, ...productInfo }],
             });
         }
 
