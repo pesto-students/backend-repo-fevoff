@@ -4,13 +4,25 @@ const Order = model.order;
 
 //app.post('/api/checkout'
 exports.checkoutCart = async (req, res, next) => {
-    const { userId, items, totalCost, paymentMethod, shippingAddress } = req.body;
+    const { userId, items, totalCost, paymentMethod, shippingAddress, shippingCharges } = req.body;
+    const gstRate = 0.18;
+
+    const subTotal = totalCost;
+
+
+    const gst = subTotal * gstRate;
+
+
+    const finalTotalCost = subTotal + gst + shippingCharges;
 
     try {
         const newOrder = new Order({
             userId,
             items,
-            totalCost,
+            subTotal, // Original total cost without GST and shipping
+            gst, // Calculated GST
+            shippingCharges, // Provided in the request
+            totalCost: finalTotalCost,
             paymentMethod,
             shippingAddress,
             status: 'pending', // Initial status
