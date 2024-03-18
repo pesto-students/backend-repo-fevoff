@@ -26,6 +26,8 @@ const checkout = require('./checkout.routes');
 
 const payment = require('./payment.routes');
 
+const review = require('./review.routes');
+
 app.use(brands);
 
 app.use(categorys);
@@ -49,5 +51,7 @@ app.use(order);
 app.use(checkout);
 
 app.use(payment);
+
+app.use(review);
 
 module.exports = app;
