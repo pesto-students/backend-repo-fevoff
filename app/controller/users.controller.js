@@ -229,6 +229,17 @@ exports.updateUser = async (req, res, next) => {
                     }
                 }
 
+                let profileImage = "";
+
+                if (data.profileImage != null && data.profileImage != "") {
+
+                    let imageName = imagePath + "user-img-" + userId + moment().format("YYYY-MM-DD-HH-mm-ss");
+
+                    profileImage = await decodeBase64Image(data.profileImage, imageName);
+
+                    userDetails = { ...userDetails, profileImage: profileImage };
+                }
+
                 const reponse = await Users.findOneAndUpdate(
                     { _id: userId },
                     { $set: userDetails },
