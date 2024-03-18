@@ -28,4 +28,6 @@ db.cart = require("./cart.model");
 
 db.order = require("./order.model");
 
+db.review = require("./review.model");
+
 module.exports = db;
