@@ -2,8 +2,11 @@ const model = require('./../model/db');
 
 const Order = model.order;
 
+const Cart = model.cart;
+
+
 exports.paymentCallback = async (req, res, next) => {
-    const { orderId, transactionId, transactionTime, paymentStatus } = req.body;
+    const { userId, orderId, transactionId, transactionTime, paymentStatus } = req.body;
 
     try {
         const order = await Order.findById(orderId);
@@ -27,6 +30,8 @@ exports.paymentCallback = async (req, res, next) => {
         }
 
         await order.save();
+        await Cart.findOneAndDelete({ userId });
+        console.log(`Cart deleted for user ${userId} as the order was placed with Cash on Delivery.`);
         res.status(200).send({ message: 'Payment details updated successfully.' });
     } catch (error) {
         res.status(500).send({ message: error.message });
