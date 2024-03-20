@@ -15,24 +15,29 @@ exports.paymentCallback = async (req, res, next) => {
             return res.status(404).send({ message: 'Order not found.' });
         }
 
-        // Update the order with payment details
         order.paymentDetails = {
             transactionId,
             transactionTime: new Date(transactionTime),
             paymentStatus
         };
 
-        // Optionally, update the order status based on paymentStatus
-        if (paymentStatus === 'success') {
+        if (paymentStatus == 'success') {
             order.status = 'paid';
-        } else if (paymentStatus === 'failed') {
+        } else if (paymentStatus == 'failed') {
             order.status = 'payment_failed';
         }
 
-        await order.save();
+        await Order.findOneAndUpdate(
+            { _id: orderId },
+            { $set: order },
+            { new: true }
+        );
         await Cart.findOneAndDelete({ userId });
+
         console.log(`Cart deleted for user ${userId} as the order was placed with Cash on Delivery.`);
-        res.status(200).send({ message: 'Payment details updated successfully.' });
+
+        res.status(200).send({ message: 'Payment details updated successfully.', data: order });
+
     } catch (error) {
         res.status(500).send({ message: error.message });
     }

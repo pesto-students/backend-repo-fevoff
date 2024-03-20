@@ -11,9 +11,8 @@ exports.checkoutCart = async (req, res, next) => {
 
     const subTotal = totalCost;
 
-
-    const gst = subTotal * gstRate;
-
+    // const gst = subTotal * gstRate;
+    const gst = 0;
 
     const finalTotalCost = subTotal + gst + shippingCharges;
 
