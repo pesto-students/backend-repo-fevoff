@@ -16,4 +16,6 @@ routes.route(baseUrl + "/:productId").put(products.updateProducts);
 
 routes.route(baseUrl + "/:productId").delete(products.deleteProducts);
 
+routes.route("/search").get(products.searchProducts);
+
 module.exports = routes;

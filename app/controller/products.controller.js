@@ -414,3 +414,28 @@ exports.deleteProducts = async (req, res, next) => {
     }
 
 };
+
+
+exports.searchProducts = async (req, res, next) => {
+    const searchQuery = req.query.q;
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 10;
+
+    try {
+        const products = await Products.find({ name: { $regex: searchQuery, $options: 'i' } })
+            .skip((page - 1) * limit)
+            .limit(limit);
+
+        res.status(statusCode.SUCCESS_CODE).send({
+            message: "Products found successfully",
+            status: true,
+            data: products
+        });
+    } catch (error) {
+        res.status(statusCode.INTERNAL_SERVER_ERROR).send({
+            message: "Internal Server Error " + error.message,
+            status: false,
+            data: []
+        });
+    }
+};
