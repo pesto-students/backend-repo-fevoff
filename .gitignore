@@ -2,7 +2,7 @@
 
 .env
 
-**/uploads/brands/*
-**/uploads/categorys/*
-**/uploads/users/*
-**/uploads/products/*
+# **/uploads/brands/*
+# **/uploads/categorys/*
+# **/uploads/users/*
+# **/uploads/products/*
