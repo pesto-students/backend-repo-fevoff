@@ -28,6 +28,8 @@ const payment = require('./payment.routes');
 
 const review = require('./review.routes');
 
+const contactRequest = require("./contact-request.routes");
+
 app.use(brands);
 
 app.use(categorys);
@@ -53,5 +55,7 @@ app.use(checkout);
 app.use(payment);
 
 app.use(review);
+
+app.use(contactRequest);
 
 module.exports = app;
