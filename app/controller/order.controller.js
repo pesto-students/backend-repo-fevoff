@@ -7,7 +7,7 @@ exports.getOrderHistory = async (req, res, next) => {
     const { userId } = req.params;
 
     try {
-        const orders = await Order.find({ userId })
+        const orders = await Order.find({ userId }).sort({ createdAt: -1 })
             .populate({
                 path: 'items.productId',
                 select: 'name productSlug brand category productPrice productMainImage',
@@ -19,7 +19,6 @@ exports.getOrderHistory = async (req, res, next) => {
             return res.status(404).send({ message: 'No orders found for this user.' });
         }
 
-        // Transforming orders for client consumption
         const transformedOrders = orders.map(order => ({
             orderId: order._id,
             subTotal: order.subTotal,
