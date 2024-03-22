@@ -8,7 +8,7 @@ const verifyJWT = require("./../middelware/verify-jwt");
 
 const baseUrl = "/users-address";
 
-routes.post(baseUrl, users.addUsersAddress);
+routes.post(baseUrl, verifyJWT, users.addUsersAddress);
 
 routes.route(baseUrl + "/:userId").get(users.getUsersAddressList);
 
