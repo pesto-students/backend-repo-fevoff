@@ -4,7 +4,8 @@ const Order = model.order;
 
 const statusCode = require("./../config/status-codes");
 
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
+const { ObjectId } = require('mongodb');
 
 exports.getOrderHistory = async (req, res, next) => {
     const { userId } = req.params;
@@ -136,11 +137,7 @@ exports.getOrdersDetails = async (req, res, next) => {
     try {
 
         let pipeline = [
-            {
-                $match: {
-                    _id: orderId
-                }
-            },
+            { $match: { _id: new ObjectId(orderId) } },
             {
                 $sort: { createdAt: -1 }
             },
